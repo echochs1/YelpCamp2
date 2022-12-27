@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 const express = require('express');
@@ -16,9 +16,9 @@ const User = require('./models/user');
 const port = 3000;
 const { urlencoded } = require('express');
 
-const campgroundsRoutes = require('./routes/campgrounds');
-const reviewsRoutes = require('./routes/reviews');
-const usersRoutes = require('./routes/users');
+const userRoutes = require('./routes/users');
+const campgroundRoutes = require('./routes/campgrounds');
+const reviewRoutes = require('./routes/reviews');
 
 main()
     .then(() => {
@@ -33,24 +33,26 @@ async function main() {
 
 const app = express();
 
-app.engine('ejs', ejsMate);
+app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views'))
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')))
 const sessionConfig = {
-    secret: 'thisshouldbeabettersecret',
+    secret: 'thisshouldbeabettersecret!',
     resave: false,
-    saveUninitialized: true, 
+    saveUninitialized: true,
     cookie: {
         httpOnly: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
-app.use(session(sessionConfig));
+
+app.use(session(sessionConfig))
+
 app.use(flash());
 
 app.use(passport.initialize());
@@ -61,19 +63,20 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
+    console.log(session)
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
 
-app.use('/', usersRoutes);
-app.use('/campgrounds', campgroundsRoutes);
-app.use('/campgrounds/:id/reviews', reviewsRoutes);
+app.use('/', userRoutes);
+app.use('/campgrounds', campgroundRoutes)
+app.use('/campgrounds/:id/reviews', reviewRoutes)
 
 
 app.get('/', (req, res) => {
-    res.render('home');
+    res.render('home')
 });
 
 app.all('*', (req, res, next) => {
