@@ -9,9 +9,11 @@
         <div class="row">
             <div class="col-md-4">
                 <%if(campground.images.length) {%>
-                <img class="img-fluid" alt="" src="<%=campground.images[0].url%>">
+                <img class="img-fluid" alt="" src="<%=campground.images[0].url%>" crossorigin>
                 <% }else {%>
-                    <img class="img-fluid" alt="" src="https://res.cloudinary.com/da7cgh4tv/image/upload/v1672186136/YelpCamp2/gfwht98ivxzxm1l9o6wb.jpg">
+                    <img class="img-fluid" alt="" 
+                    src="https://res.cloudinary.com/da7cgh4tv/image/upload/v1672186136/YelpCamp2/gfwht98ivxzxm1l9o6wb.jpg" 
+                    crossorigin>
                 <% } %>
             </div>
             <div class="col-md-8">
